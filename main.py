@@ -2,19 +2,21 @@ import cpuinfo
 import json
 from flask import Flask, jsonify
 
-
-# Generate the Flask server instance and name it "app" as a general convention
 app = Flask(__name__)
 
 
 @app.route('/')
-def status_endpoint():
-    # Just return cpuinfo and a 200 status code
+def cpu_info_endpoint():
     try:
         return jsonify(cpuinfo.get_cpu_info()), 200
     except Exception as e:
         # Depending on the requirements, we can expose the error message
         return jsonify(error='There was an error obtaining CPU info'), 500
+
+
+@app.route('/healthcheck')
+def healthcheck_endpoint():
+    return jsonify(status='OK'), 200
 
 
 if __name__ == '__main__':
